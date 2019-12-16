@@ -144,7 +144,7 @@ DWORD WINAPI keyThread(LPVOID lpParam)
 		
 		Sleep(2); 
 	}
-	logF("Aight bro I'm boutta head out");
+	logF("Exiting Thread");
 	Sleep(150); // Give the threads a bit of time to exit
 
 	FreeLibraryAndExitThread(static_cast<HMODULE>(lpParam), 1); // Uninject
@@ -153,7 +153,7 @@ DWORD WINAPI keyThread(LPVOID lpParam)
 DWORD WINAPI injectorConnectionThread(LPVOID lpParam) {
 	logF("Injector Connection Thread started");
 
-	struct MemoryBoi {
+	struct loaderMem {
 		short protocolVersion;
 		bool isPresent;
 		bool isUnread;
@@ -171,16 +171,16 @@ DWORD WINAPI injectorConnectionThread(LPVOID lpParam) {
 	
 	logF("Magic array at %llX", magicArray);
 
-	MemoryBoi** horionToInjectorPtr = reinterpret_cast<MemoryBoi**>(magicArray + sizeof(magicValues));
-	MemoryBoi** injectorToHorionPtr = reinterpret_cast<MemoryBoi**>(magicArray + sizeof(magicValues) + sizeof(uintptr_t));
+	loaderMem** horionToInjectorPtr = reinterpret_cast<loaderMem**>(magicArray + sizeof(magicValues));
+	loaderMem** injectorToHorionPtr = reinterpret_cast<loaderMem**>(magicArray + sizeof(magicValues) + sizeof(uintptr_t));
 
-	*horionToInjectorPtr = new MemoryBoi();
-	MemoryBoi* horionToInjector = *horionToInjectorPtr;
+	*horionToInjectorPtr = new loaderMem();
+	loaderMem* horionToInjector = *horionToInjectorPtr;
 	horionToInjector->isPresent = true;
 	horionToInjector->protocolVersion = 1;
 
-	*injectorToHorionPtr = new MemoryBoi();
-	MemoryBoi* injectorToHorion = *injectorToHorionPtr;
+	*injectorToHorionPtr = new loaderMem();
+	loaderMem* injectorToHorion = *injectorToHorionPtr;
 
 	magicArray[0] = 0x48; //Only find this allocated one, not the one in the thread stack
 

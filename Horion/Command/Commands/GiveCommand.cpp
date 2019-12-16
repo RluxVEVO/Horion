@@ -32,7 +32,7 @@ bool GiveCommand::execute(std::vector<std::string>* args)
 	C_Inventory* inv = supplies->inventory;
 	C_BlockLegacy* blockItem = nullptr;
 	C_Item* itemItem = nullptr;
-	C_ItemStack* yot = nullptr;
+	C_ItemStack* stackItem = nullptr;
 	auto transactionManager = g_Data.getLocalPlayer()->getTransactionManager();
 
 	static uintptr_t** VanillaBlocks__mDirtPtr = 0x0;
@@ -89,20 +89,20 @@ bool GiveCommand::execute(std::vector<std::string>* args)
 			clientMessageF("%sInvalid Item!", RED);
 			return true;
 		}
-		else if (blockItem != nullptr && yot == nullptr)
+		else if (blockItem != nullptr && stackItem == nullptr)
 		{
 			if (itemData == 0)
-				yot = new C_ItemStack(*blockItem, count);
+				stackItem = new C_ItemStack(*blockItem, count);
 			else
 			{
 				void* ItemPtr = malloc(0x8);
 				C_Item*** cStack = getItemFromId(ItemPtr, blockItem->blockId);
-				yot = new C_ItemStack(***cStack, count, itemData);
+				stackItem = new C_ItemStack(***cStack, count, itemData);
 				free(ItemPtr);
 			}
 		}
-		else if (itemItem != nullptr && yot == nullptr)
-			yot = new C_ItemStack(*itemItem, count, itemData);
+		else if (itemItem != nullptr && stackItem == nullptr)
+			stackItem = new C_ItemStack(*itemItem, count, itemData);
 	}
 	else
 	{
@@ -113,12 +113,12 @@ bool GiveCommand::execute(std::vector<std::string>* args)
 			clientMessageF("%sInvalid item ID!", RED);
 			return true;
 		}
-		yot = new C_ItemStack(***cStack, count, itemData);
+		stackItem = new C_ItemStack(***cStack, count, itemData);
 		free(ItemPtr);
 	}
 
-	if (yot != nullptr)
-		yot->count = count;
+	if (stackItem != nullptr)
+		stackItem->count = count;
 
 	int slot = inv->getFirstEmptySlot();
 
@@ -126,13 +126,13 @@ bool GiveCommand::execute(std::vector<std::string>* args)
 	C_InventoryAction* secondAction = nullptr;
 	if (strcmp(g_Data.getRakNetInstance()->serverIp.getText(), "mco.mineplex.com") == 0)
 	{
-		firstAction = new C_InventoryAction(slot, nullptr, yot, 32512);
-		secondAction = new C_InventoryAction(0, yot, nullptr, 156, 100);
+		firstAction = new C_InventoryAction(slot, nullptr, stackItem, 32512);
+		secondAction = new C_InventoryAction(0, stackItem, nullptr, 156, 100);
 	}
 	else
 	{
-		firstAction = new C_InventoryAction(0, yot, nullptr, 507, 99999);
-		secondAction = new C_InventoryAction(slot, nullptr, yot);
+		firstAction = new C_InventoryAction(0, stackItem, nullptr, 507, 99999);
+		secondAction = new C_InventoryAction(slot, nullptr, stackItem);
 	}
 
 	transactionManager->addInventoryAction(*firstAction);
@@ -141,7 +141,7 @@ bool GiveCommand::execute(std::vector<std::string>* args)
 	delete firstAction;
 	delete secondAction;
 
-	inv->addItemToFirstEmptySlot(yot);
+	inv->addItemToFirstEmptySlot(stackItem);
 
 	clientMessageF("%sSuccessfully given item!", GREEN);
 	return true;

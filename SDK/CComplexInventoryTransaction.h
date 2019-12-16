@@ -21,11 +21,11 @@ public:
 		}
 		memset(this, 0, sizeof(C_ComplexInventoryTransaction)); // Avoid overwriting vtable
 		vTable = ComplexInventoryTransactionVtable;
-		uintptr_t boi = reinterpret_cast<uintptr_t>(this);
+		uintptr_t reinterpretInvTransaction = reinterpret_cast<uintptr_t>(this);
 		using constructor_t = void(__fastcall*)(uintptr_t,C_InventoryTransaction&);
 		static constructor_t constructor = reinterpret_cast<constructor_t>(Utils::FindSignature("48 89 4C 24 ?? 57 48 83 EC 30 48 ?? ?? ?? ?? ?? ?? ?? ?? 48 89 5C 24 ?? 48 89 74 24 ?? 48 8B DA 48 8B F9 48 89 4C 24 ?? 8B 02 89 01 33 F6 48 89 71 ??"));
 		if (constructor != 0)
-			constructor(boi+0x10,transac);
+			constructor(reinterpretInvTransaction+0x10,transac);
 		this->actionType = 0;
 	}
 	uintptr_t** vTable; //0x0000

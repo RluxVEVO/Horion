@@ -35,7 +35,7 @@ bool setoffhandCommand::execute(std::vector<std::string>* args)
 	C_Inventory* inv = supplies->inventory;
 	C_BlockLegacy* blockItem = nullptr;
 	C_Item* itemItem = nullptr;
-	C_ItemStack* yot = nullptr;
+	C_ItemStack* stackItem = nullptr;
 	auto transactionManager = g_Data.getLocalPlayer()->getTransactionManager();
 
 	static uintptr_t** VanillaBlocks__mDirtPtr = 0x0;
@@ -92,20 +92,20 @@ bool setoffhandCommand::execute(std::vector<std::string>* args)
 			clientMessageF("%sInvalid Item!", RED);
 			return true;
 		}
-		else if (blockItem != nullptr && yot == nullptr)
+		else if (blockItem != nullptr && stackItem == nullptr)
 		{
 			if (itemData == 0)
-				yot = new C_ItemStack(*blockItem, count);
+				stackItem = new C_ItemStack(*blockItem, count);
 			else
 			{
 				void* ItemPtr = malloc(0x8);
 				C_Item*** cStack = getItemFromId(ItemPtr, blockItem->blockId);
-				yot = new C_ItemStack(***cStack, count, itemData);
+				stackItem = new C_ItemStack(***cStack, count, itemData);
 				free(ItemPtr);
 			}
 		}
-		else if (itemItem != nullptr && yot == nullptr)
-			yot = new C_ItemStack(*itemItem, count, itemData);
+		else if (itemItem != nullptr && stackItem == nullptr)
+			stackItem = new C_ItemStack(*itemItem, count, itemData);
 	}
 	else
 	{
@@ -116,15 +116,15 @@ bool setoffhandCommand::execute(std::vector<std::string>* args)
 			clientMessageF("%sInvalid item ID!", RED);
 			return true;
 		}
-		yot = new C_ItemStack(***cStack, count, itemData);
+		stackItem = new C_ItemStack(***cStack, count, itemData);
 		free(ItemPtr);
 	}
 
-	if (yot != nullptr)
-		yot->count = count;
+	if (stackItem != nullptr)
+		stackItem->count = count;
 
 
-	g_Data.getLocalPlayer()->setOffhandSlot(yot);
+	g_Data.getLocalPlayer()->setOffhandSlot(stackItem);
 	clientMessageF("%sSet item as offhand!", BLUE);
 	return true;
 }
