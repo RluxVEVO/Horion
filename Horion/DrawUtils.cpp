@@ -92,7 +92,7 @@ C_Font* DrawUtils::getFont(Fonts font)
 {
 	switch (font) {
 	case Fonts::SMOOTH:
-		return g_Data.getClientInstance()->N0000080D->getTheGoodFontThankYou();
+		return g_Data.getClientInstance()->N0000080D->getFont();
 		break;
 	case Fonts::UNICOD:
 		return g_Data.getClientInstance()->_getUnicodeFont();

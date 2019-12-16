@@ -67,7 +67,7 @@ private:
 public:
 	bool canUseKeys;//0x0218
 
-	C_Font* getTheGoodFontThankYou() {
+	C_Font* getFont() {
 		return (*ptr0->ptr)->smoothFont;
 	};
 
