@@ -187,7 +187,7 @@ void IModule::onLoadConfig(json * conf)
 						sett->value->text = &value.get<std::string>();
 						break;
 					}
-					sett->makeSureTheValueIsAGoodBoiAndTheUserHasntScrewedWithIt();
+					sett->isValueGood();
 					continue;
 				}
 				catch (std::exception e) {
