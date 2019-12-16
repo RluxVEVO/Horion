@@ -153,7 +153,7 @@ DWORD WINAPI keyThread(LPVOID lpParam)
 DWORD WINAPI injectorConnectionThread(LPVOID lpParam) {
 	logF("Injector Connection Thread started");
 
-	struct LoaderMem {
+	struct loaderMem {
 		short protocolVersion;
 		bool isPresent;
 		bool isUnread;
@@ -171,16 +171,16 @@ DWORD WINAPI injectorConnectionThread(LPVOID lpParam) {
 	
 	logF("Magic array at %llX", magicArray);
 
-	LoaderMem** horionToInjectorPtr = reinterpret_cast<LoaderMem**>(magicArray + sizeof(magicValues));
-	LoaderMem** injectorToHorionPtr = reinterpret_cast<LoaderMem**>(magicArray + sizeof(magicValues) + sizeof(uintptr_t));
+	loaderMem** horionToInjectorPtr = reinterpret_cast<loaderMem**>(magicArray + sizeof(magicValues));
+	loaderMem** injectorToHorionPtr = reinterpret_cast<loaderMem**>(magicArray + sizeof(magicValues) + sizeof(uintptr_t));
 
-	*horionToInjectorPtr = new LoaderMem();
-	LoaderMem* horionToInjector = *horionToInjectorPtr;
+	*horionToInjectorPtr = new loaderMem();
+	loaderMem* horionToInjector = *horionToInjectorPtr;
 	horionToInjector->isPresent = true;
 	horionToInjector->protocolVersion = 1;
 
-	*injectorToHorionPtr = new LoaderMem();
-	LoaderMem* injectorToHorion = *injectorToHorionPtr;
+	*injectorToHorionPtr = new loaderMem();
+	loaderMem* injectorToHorion = *injectorToHorionPtr;
 
 	magicArray[0] = 0x48; //Only find this allocated one, not the one in the thread stack
 
