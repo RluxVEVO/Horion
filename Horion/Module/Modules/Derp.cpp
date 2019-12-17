@@ -2,25 +2,21 @@
 
 
 
-Derp::Derp() : IModule(0x0, Category::EXPLOITS, "lol you stupid")
-{
+Derp::Derp() : IModule(0x0, Category::EXPLOITS, "lol you stupid") {
 	this->registerBoolSetting("ihaveastroke", &this->epicStroke, this->epicStroke);
 	this->registerBoolSetting("packet mode", &this->packetMode, this->packetMode);
 }
 
 
-Derp::~Derp()
-{
+Derp::~Derp() {
 
 }
 
-const char* Derp::getModuleName()
-{
+const char* Derp::getModuleName() {
 	return "Derp";
 }
 
-void Derp::onTick(C_GameMode* gm)
-{
+void Derp::onTick(C_GameMode* gm) {
 	if (gm->player == nullptr) return;
 
 	if (packetMode) {
@@ -28,14 +24,12 @@ void Derp::onTick(C_GameMode* gm)
 		if (epicStroke) {
 			p->pitch = (float)(rand() % 360);
 			p->yaw = (float)(rand() % 360);
-		}
-		else {
+		} else {
 			p->pitch = (float)(counter % 360);
 			p->yaw = (float)(counter % 360);
 		}
 		g_Data.getClientInstance()->loopbackPacketSender->sendToServer(p);
-	}
-	else {
+	} else {
 		if (epicStroke) {
 			gm->player->pitch = (float)(rand() % 360);
 			gm->player->bodyYaw = (float)(rand() % 360);
