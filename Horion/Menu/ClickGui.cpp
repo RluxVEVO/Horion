@@ -435,8 +435,8 @@ void ClickGui::renderCategory(Category category)
 										if (value > maxValue)
 											value = maxValue;
 										value /= maxValue; // Value is now in range 0 - 1
-										const float endXlol = (xEnd - textPadding) - (currentXOffset + textPadding + 5);
-										value *= endXlol; // Value is now pixel diff between start of bar and end of progress
+										const float endX = (xEnd - textPadding) - (currentXOffset + textPadding + 5);
+										value *= endX; // Value is now pixel diff between start of bar and end of progress
 
 										// Draw Int
 										{
@@ -474,7 +474,7 @@ void ClickGui::renderCategory(Category category)
 
 										// Save Value
 										{
-											value /= endXlol; // Now in range 0 - 1
+											value /= endX; // Now in range 0 - 1
 											value *= maxValue;
 											value += minValue;
 
@@ -533,8 +533,8 @@ void ClickGui::renderCategory(Category category)
 										if (value > maxValue)
 											value = maxValue;
 										value /= maxValue; // Value is now in range 0 - 1
-										const float endXlol = (xEnd - textPadding) - (currentXOffset + textPadding + 5);
-										value *= endXlol; // Value is now pixel diff between start of bar and end of progress
+										const float endX = (xEnd - textPadding) - (currentXOffset + textPadding + 5);
+										value *= endX; // Value is now pixel diff between start of bar and end of progress
 
 										// Draw Int
 										{
