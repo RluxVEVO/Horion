@@ -24,14 +24,14 @@ void TabGui::renderLabel(const char * text, IModule* mod)
 	//size_t strlength = strlen(text) + 1;
 	//char* alloc = new char[strlength];
 	//strcpy_s(alloc, strlength, text);
-	LabelContainer yikes;
-	yikes.text = text;
+	LabelContainer ModuleLabel;
+	ModuleLabel.text = text;
 	if (mod != 0) {
-		yikes.enabled = mod->isEnabled();
-		yikes.mod = mod;
+		ModuleLabel.enabled = mod->isEnabled();
+		ModuleLabel.mod = mod;
 	}
 	
-	labelList.push_back(yikes);
+	labelList.push_back(ModuleLabel);
 }
 
 void TabGui::renderLevel()
