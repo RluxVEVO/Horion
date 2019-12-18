@@ -1,8 +1,7 @@
 #include "InventoryCleaner.h"
 #include "../ModuleManager.h"
 
-InventoryCleaner::InventoryCleaner() : IModule(0x0, Category::PLAYER, "Automatically throws not needed stuff out of your inventory")
-{
+InventoryCleaner::InventoryCleaner() : IModule(0x0, Category::PLAYER, "Automatically throws not needed stuff out of your inventory") {
 	registerBoolSetting("Tools", &this->keepTools, this->keepTools);
 	registerBoolSetting("Armor", &this->keepArmor, this->keepArmor);
 	registerBoolSetting("Food", &this->keepFood, this->keepFood);
@@ -12,17 +11,15 @@ InventoryCleaner::InventoryCleaner() : IModule(0x0, Category::PLAYER, "Automatic
 }
 
 
-InventoryCleaner::~InventoryCleaner()
-{
+InventoryCleaner::~InventoryCleaner() {
+
 }
 
-const char* InventoryCleaner::getModuleName()
-{
+const char* InventoryCleaner::getModuleName() {
 	return ("InventoryCleaner");
 }
 
-void InventoryCleaner::onTick(C_GameMode* gm)
-{
+void InventoryCleaner::onTick(C_GameMode* gm) {
 	if (g_Data.getLocalPlayer() == nullptr) return;
 	if ((g_Data.getLocalPlayer()->canOpenContainerScreen() || moduleMgr->getModule<ChestStealer>()->chestScreenController != nullptr) && openInv) return;
 
@@ -55,11 +52,9 @@ void InventoryCleaner::onTick(C_GameMode* gm)
 			C_Inventory* inv = supplies->inventory;
 			float damage = 0;
 			int item = supplies->selectedHotbarSlot;
-			for (int n = 0; n < 36; n++)
-			{
+			for (int n = 0; n < 36; n++) {
 				C_ItemStack* stack = inv->getItemStack(n);
-				if (stack->item != NULL)
-				{
+				if (stack->item != NULL) {
 					float currentDamage = stack->getAttackingDamageWithEnchants();
 					if (currentDamage > damage) {
 						damage = currentDamage;
@@ -128,8 +123,7 @@ std::vector<int> InventoryCleaner::findUselessItems() {
 		
 	}
 	// Filter weapons
-	if(items.size() > 0)
-	{
+	if(items.size() > 0) {
 		// Filter by attack damage
 		std::sort(items.begin(), items.end(), [](const C_ItemStack* lhs, const C_ItemStack* rhs) {
 				C_ItemStack* current = const_cast<C_ItemStack*>(lhs);
@@ -164,16 +158,14 @@ std::vector<int> InventoryCleaner::findUselessItems() {
 		std::vector<C_ItemStack*> boots;
 
 		// Filter by armor value
-		std::sort(items.begin(), items.end(), [](const C_ItemStack* lhs, const C_ItemStack* rhs)
-		{
+		std::sort(items.begin(), items.end(), [](const C_ItemStack* lhs, const C_ItemStack* rhs) {
 			C_ItemStack* current = const_cast<C_ItemStack*>(lhs);
 			C_ItemStack* other = const_cast<C_ItemStack*>(rhs);
 			return current->getArmorValueWithEnchants() > other->getArmorValueWithEnchants();
 		});
 		
 		// Put armor items in their respective vectors
-		for (C_ItemStack* itemsteck : items)
-		{
+		for (C_ItemStack* itemsteck : items) {
 			C_Item* item = itemsteck->getItem();
 			if (item->isArmor()) {
 				C_ArmorItem* armorItem = reinterpret_cast<C_ArmorItem*>(item);
