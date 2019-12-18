@@ -1,18 +1,22 @@
 #include "Scaffold.h"
 
-Scaffold::Scaffold() : IModule(VK_NUMPAD1, Category::BUILD, "Automatically build blocks beneath you") {
+Scaffold::Scaffold() : IModule(VK_NUMPAD1, Category::BUILD, "Automatically build blocks beneath you")
+{
 	registerBoolSetting("AutoSelect", &this->autoselect, this->autoselect);
 }
 
 
-Scaffold::~Scaffold() {
+Scaffold::~Scaffold()
+{
 }
 
-const char* Scaffold::getModuleName() {
+const char* Scaffold::getModuleName()
+{
 	return ("Scaffold");
 }
 
-bool Scaffold::tryScaffold(vec3_t blockBelow) {
+bool Scaffold::tryScaffold(vec3_t blockBelow)
+{
 	blockBelow = blockBelow.floor();
 
 	DrawUtils::drawBox(blockBelow, vec3_t(blockBelow).add(1), 0.4f);
@@ -44,7 +48,8 @@ bool Scaffold::tryScaffold(vec3_t blockBelow) {
 			vec3_ti* current = *it;
 
 			vec3_ti* calc = blok->subAndReturn(*current);
-			if (!(*(g_Data.getLocalPlayer()->region->getBlock(*calc)->blockLegacy))->material->isReplaceable) {
+			if (!(*(g_Data.getLocalPlayer()->region->getBlock(*calc)->blockLegacy))->material->isReplaceable)
+			{
 				// Found a solid block to click
 				foundCandidate = true;
 				blok->set(calc);
@@ -60,7 +65,8 @@ bool Scaffold::tryScaffold(vec3_t blockBelow) {
 				findBlock();
 				g_Data.getCGameMode()->buildBlock(blok, i);
 				g_Data.getLocalPlayer()->getSupplies()->selectedHotbarSlot = slot;
-			} else {
+			}
+			else {
 				g_Data.getCGameMode()->buildBlock(blok, i);
 			}
 			delete blok;
@@ -76,7 +82,8 @@ bool Scaffold::findBlock() {
 	C_PlayerInventoryProxy* supplies = g_Data.getLocalPlayer()->getSupplies();
 	C_Inventory* inv = supplies->inventory;
 	int slot = supplies->selectedHotbarSlot;
-	for (int n = 0; n < 9; n++) {
+	for (int n = 0; n < 9; n++)
+	{
 		C_ItemStack* stack = inv->getItemStack(n);
 		if (stack->item != NULL) {
 			if ((*stack->item)->itemId < 256 && (*stack->item)->itemId != 0) {
@@ -88,7 +95,8 @@ bool Scaffold::findBlock() {
 	return false;
 }
 
-void Scaffold::onPostRender() {
+void Scaffold::onPostRender()
+{
 	if (g_Data.getLocalPlayer() == nullptr)
 		return;
 	if (!g_Data.canUseMoveKeys())
